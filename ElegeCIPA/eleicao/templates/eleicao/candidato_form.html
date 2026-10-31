@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ titulo }} - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="pt-32 min-h-[100vh] px-6 py-12 bg-gray-50">
+
+    <h1 class="text-3xl font-bold text-primary text-center mb-8 flex items-center justify-center gap-2">
+        <i class="fas {{ icone }} text-accent"></i> {{ titulo }}
+    </h1>
+
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8">
+        <form method="post" enctype="multipart/form-data" class="space-y-6" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <p class="text-red-600 text-sm">{{ form.non_field_errors.0 }}</p>
+            {% endif %}
+
+            <div class="flex flex-col">
+                <label for="{{ form.foto.id_for_label }}" class="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <i class="fas fa-image"></i> Foto
+                </label>
+                {{ form.foto }}
+                <button type="button" onclick="document.getElementById('{{ form.foto.id_for_label }}').click()"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl bg-white text-gray-700 hover:bg-gray-100 transition flex items-center justify-between">
+                    <span id="fileName">Selecionar arquivo</span>
+                    <i class="fas fa-upload text-gray-500"></i>
+                </button>
+                {% for error in form.foto.errors %}<p class="text-red-600 text-sm mt-1">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="flex flex-col">
+                <label for="{{ form.nome_completo.id_for_label }}" class="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <i class="fas fa-id-card"></i> Nome Completo
+                </label>
+                {{ form.nome_completo }}
+                {% for error in form.nome_completo.errors %}<p class="text-red-600 text-sm mt-1">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="flex flex-col">
+                <label for="{{ form.cargo.id_for_label }}" class="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <i class="fas fa-briefcase"></i> Cargo
+                </label>
+                {{ form.cargo }}
+                {% for error in form.cargo.errors %}<p class="text-red-600 text-sm mt-1">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="flex flex-col">
+                <label for="{{ form.setor.id_for_label }}" class="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <i class="fas fa-building"></i> Setor
+                </label>
+                {{ form.setor }}
+                {% for error in form.setor.errors %}<p class="text-red-600 text-sm mt-1">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="flex flex-col">
+                <label for="{{ form.unidade.id_for_label }}" class="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <i class="fas fa-sitemap"></i> Unidade
+                </label>
+                {{ form.unidade }}
+                {% for error in form.unidade.errors %}<p class="text-red-600 text-sm mt-1">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="flex flex-col">
+                <label for="{{ form.eleicao.id_for_label }}" class="text-gray-700 font-medium mb-2 flex items-center gap-2">
+                    <i class="fas fa-calendar-check"></i> Eleição
+                </label>
+                {{ form.eleicao }}
+                {% for error in form.eleicao.errors %}<p class="text-red-600 text-sm mt-1">{{ error }}</p>{% endfor %}
+            </div>
+
+            <button type="submit"
+                class="px-6 py-3 rounded-full bg-primary text-white font-semibold hover:bg-accent transition flex items-center justify-center gap-2 w-full">
+                <i class="fas fa-save"></i> {{ botao }}
+            </button>
+
+            <a href="{% url 'painel_admin' %}"
+                class="px-6 py-3 rounded-full bg-gray-300 text-gray-700 font-semibold hover:bg-gray-400 transition flex items-center justify-center gap-2 w-full">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'eleicao/js/file-input.js' %}"></script>
+{% endblock %}

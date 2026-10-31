@@ -1,0 +1,13 @@
+{% load static %}
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition {{ borda }}">
+    <img src="{% if c.foto %}{{ c.foto.url }}{% else %}{% static 'eleicao/img/avatar-placeholder.svg' %}{% endif %}"
+        alt="{{ c.nome_completo }}" class="w-full h-72 object-cover">
+    <div class="p-6 text-center space-y-3">
+        <h3 class="text-xl font-semibold text-primary">{{ c.nome_completo }}</h3>
+        <p class="text-gray-600 text-sm">{{ c.cargo|default:"Candidato" }}</p>
+        <p class="text-gray-500 text-xs">Unidade: {{ c.get_unidade_display }}</p>
+        <div class="mt-4 inline-flex items-center justify-center gap-2 px-4 py-1 rounded-full font-medium {{ badge }}">
+            <i class="fas {{ icone }}"></i> {{ c.total_votos }} votos
+        </div>
+    </div>
+</div>

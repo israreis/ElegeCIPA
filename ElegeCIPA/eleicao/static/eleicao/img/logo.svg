@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-label="Sua Logo">
+  <rect x="4" y="8" width="48" height="48" rx="12" fill="#3730a3"/>
+  <path d="M18 32.5l9 9 19-19" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="66" y="41" font-family="Archivo, Arial, sans-serif" font-size="26" font-weight="700" fill="#3730a3">Sua Logo</text>
+</svg>
