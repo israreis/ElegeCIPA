@@ -14,16 +14,24 @@ Python 3.12+, Django 5.2, PostgreSQL (SQLite para desenvolvimento/testes), White
 
 ## Instalação
 
-```bash
+Os comandos abaixo são para o **PowerShell** (Windows). No Prompt de Comando (cmd), troque a ativação por `.venv\Scripts\activate.bat` e `Copy-Item` por `copy`.
+
+```powershell
 python -m venv .venv
-source .venv/bin/activate
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-cp .env.example .env
+Copy-Item .env.example .env
 ```
 
-Edite o `.env`. `SECRET_KEY` e `MATRICULA_HASH_KEY` são obrigatórias fora de `DEBUG`; gere valores com:
+Se o PowerShell bloquear a ativação do ambiente virtual, libere scripts para o seu usuário uma única vez:
 
-```bash
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+Edite o `.env` (por exemplo, com `notepad .env`). `SECRET_KEY` e `MATRICULA_HASH_KEY` são obrigatórias fora de `DEBUG`; gere valores com:
+
+```powershell
 python -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
@@ -31,7 +39,7 @@ python -c "import secrets; print(secrets.token_urlsafe(50))"
 
 Aplique as migrações e crie o administrador:
 
-```bash
+```powershell
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
@@ -43,7 +51,7 @@ Para desenvolvimento local sem PostgreSQL, use no `.env`: `DEBUG=True` e `DB_ENG
 
 Prepare um CSV ou Excel com as colunas `matricula` e `CPF`:
 
-```bash
+```powershell
 python manage.py import_matriculas eleitores.xlsx --mat-col matricula --cpf-col CPF
 ```
 
@@ -72,15 +80,27 @@ Opções: `--sheet` (nome ou índice da planilha). CPFs com zeros à esquerda pe
 
 ## Testes
 
-```bash
-DEBUG=True DB_ENGINE=django.db.backends.sqlite3 python manage.py test
+No PowerShell, defina as variáveis na sessão atual e execute:
+
+```powershell
+$env:DEBUG = "True"
+$env:DB_ENGINE = "django.db.backends.sqlite3"
+python manage.py test
 ```
+
+No Prompt de Comando (cmd), use `set DEBUG=True` e `set DB_ENGINE=django.db.backends.sqlite3`.
 
 ## Deploy
 
-```bash
+```powershell
 python manage.py collectstatic --noinput
-gunicorn ElegeCIPA.wsgi:application
+```
+
+O Gunicorn (usado no `Procfile`) só roda em Linux/macOS. Em um servidor Windows, use o Waitress:
+
+```powershell
+pip install waitress
+waitress-serve --port=8000 ElegeCIPA.wsgi:application
 ```
 
 - Defina `DEBUG=False`, `USE_HTTPS=True` e `CSRF_TRUSTED_ORIGINS` atrás de um proxy que envie `X-Forwarded-Proto`.
