@@ -80,6 +80,10 @@ Opções: `--sheet` (nome ou índice da planilha). CPFs com zeros à esquerda pe
 
 ## Testes
 
+### Automatizados
+
+A suíte fica em `ElegeCIPA/eleicao/tests/`, organizada por área: modelos, utilitários, autenticação, votação, área administrativa, apuração e PDF, formulários, importação de eleitores, migração, segurança e identidade visual.
+
 No PowerShell, defina as variáveis na sessão atual e execute:
 
 ```powershell
@@ -89,6 +93,17 @@ python manage.py test
 ```
 
 No Prompt de Comando (cmd), use `set DEBUG=True` e `set DB_ENGINE=django.db.backends.sqlite3`.
+
+Para rodar só uma área ou um teste:
+
+```powershell
+python manage.py test ElegeCIPA.eleicao.tests.test_voting
+python manage.py test ElegeCIPA.eleicao.tests.test_voting.RegistroDeVotoTests.test_voto_em_branco
+```
+
+### Manuais
+
+O roteiro de validação no navegador está em [`docs/ROTEIRO_TESTES_MANUAIS.md`](docs/ROTEIRO_TESTES_MANUAIS.md), com massa de dados em [`docs/eleitores_exemplo.csv`](docs/eleitores_exemplo.csv). Execute-o antes de cada eleição real e a cada nova versão.
 
 ## Deploy
 
@@ -110,6 +125,7 @@ waitress-serve --port=8000 ElegeCIPA.wsgi:application
 ## Estrutura
 
 ```
+docs/                      roteiro de testes manuais e dados de exemplo
 ElegeCIPA/
 ├── settings.py, urls.py, wsgi.py, asgi.py
 └── eleicao/
@@ -117,6 +133,7 @@ ElegeCIPA/
     ├── pdf.py, utils.py, context_processors.py
     ├── management/commands/import_matriculas.py
     ├── migrations/
+    ├── tests/                 testes automatizados
     ├── static/eleicao/        css, js e imagens
     └── templates/
 ```
